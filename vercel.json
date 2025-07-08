@@ -13,7 +13,7 @@
     "env": {
         "APP_ENV": "production",
         "APP_DEBUG": "true",
-        "APP_URL": "https://aqar.ledraa.com",
+        "APP_URL": "https://stock.ledraa.com",
         "APP_KEY": "base64:Irm32KT6H2jy6ynRc7SoSCDFFGvtoWLDZQCAq/aqmEE=",
 
         "APP_CONFIG_CACHE": "/tmp/config.php",
