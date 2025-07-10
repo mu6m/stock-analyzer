@@ -10,15 +10,18 @@ return new class extends Migration
     {
         Schema::create('news', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('title');
+            $table->text('title');
             $table->text('description');
             $table->timestamp('creation_date');
-            $table->float('stock_change');
-            $table->string('stock_id');
-            $table->timestamps();
+            $table->string('stock_id')->nullable();
+
             
-            $table->foreign('stock_id')->references('stock_id')->on('stocks')->onDelete('cascade');
-        });
+            $table->foreign('stock_id')
+                  ->references('stock_id')
+                  ->on('stocks')
+                  ->onDelete('cascade')
+                  ->nullable();
+            });
     }
 
     public function down(): void

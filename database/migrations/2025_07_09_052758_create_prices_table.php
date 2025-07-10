@@ -8,8 +8,8 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('price_points', function (Blueprint $table) {
-            $table->date('id')->primary();
+        Schema::create('prices', function (Blueprint $table) {
+            $table->date('date')->primary();
             $table->decimal('open', 15, 4);
             $table->decimal('high', 15, 4);
             $table->decimal('low', 15, 4);
@@ -17,15 +17,15 @@ return new class extends Migration
             $table->bigInteger('volumeTraded');
             $table->bigInteger('noOfTrades');
             $table->decimal('turnOver', 20, 4);
-            $table->uuid('price_id');
-            $table->timestamps();
+            $table->string('stock_id');
             
-            $table->foreign('price_id')->references('id')->on('prices')->onDelete('cascade');
+            $table->foreign('stock_id')->references('stock_id')->on('stocks')->onDelete('cascade');
+
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('price_points');
+        Schema::dropIfExists('prices');
     }
 };

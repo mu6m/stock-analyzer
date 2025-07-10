@@ -8,17 +8,22 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('prices', function (Blueprint $table) {
+        Schema::create('actions', function (Blueprint $table) {
             $table->uuid('id')->primary();
+            $table->string('issueTypeDesc');
+            $table->decimal('newCApital', 15, 4);
+            $table->decimal('prevCApital', 15, 4);
+            $table->timestamp('dueDate')->nullable();
+            $table->timestamp('announceDate')->nullable();
             $table->string('stock_id');
-            $table->timestamps();
             
+
             $table->foreign('stock_id')->references('stock_id')->on('stocks')->onDelete('cascade');
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('prices');
+        Schema::dropIfExists('actions');
     }
-};  
+};

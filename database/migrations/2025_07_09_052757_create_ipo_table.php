@@ -1,5 +1,5 @@
 <?php
-
+// later 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,7 +13,6 @@ return new class extends Migration
             $table->decimal('price', 15, 4);
             $table->timestamp('creation_date');
             $table->string('stock_id');
-            $table->timestamps();
             
             $table->foreign('stock_id')->references('stock_id')->on('stocks')->onDelete('cascade');
         });

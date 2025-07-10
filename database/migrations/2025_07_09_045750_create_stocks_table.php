@@ -15,8 +15,7 @@ return new class extends Migration
             $table->string('stock_id')->primary();
             $table->string('company_name');
             $table->enum('market_type', ['NOMU', 'TASI']);
-            $table->string('field');
-            $table->timestamps();
+            $table->string('sector');
         });
     }
 
