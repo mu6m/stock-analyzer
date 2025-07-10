@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'أسهم')</title>
+    
     @vite('resources/css/app.css')
+    
     <script>
         tailwind.config = {
             theme: {
