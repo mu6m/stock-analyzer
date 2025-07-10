@@ -6,25 +6,34 @@
     },
     "routes": [
         {
-            "src": "/build/(.*)",
-            "dest": "/public/build/$1"
+            "src": "/(css|js)/(.*)$",
+            "dest": "/api/assets.php?type=$1&file=$2"
         },
         {
             "src": "/(.*)",
             "dest": "/api/index.php"
         }
     ],
+    "scripts": {
+        "vercel": ["@php -v", "npm -v", "npm install && npm run dev"],
+        "post-autoload-dump": [
+            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
+            "@php artisan package:discover --ansi"
+        ]
+    },
     "env": {
         "APP_ENV": "production",
         "APP_DEBUG": "true",
         "APP_URL": "https://stock.ledraa.com",
         "APP_KEY": "base64:Irm32KT6H2jy6ynRc7SoSCDFFGvtoWLDZQCAq/aqmEE=",
+
         "APP_CONFIG_CACHE": "/tmp/config.php",
         "APP_EVENTS_CACHE": "/tmp/events.php",
         "APP_PACKAGES_CACHE": "/tmp/packages.php",
         "APP_ROUTES_CACHE": "/tmp/routes.php",
         "APP_SERVICES_CACHE": "/tmp/services.php",
         "VIEW_COMPILED_PATH": "/tmp",
+
         "CACHE_DRIVER": "array",
         "LOG_CHANNEL": "stderr",
         "SESSION_DRIVER": "cookie"
