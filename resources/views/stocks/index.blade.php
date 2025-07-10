@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'الأسهم النقية - الرئيسية')
+@section('title', 'الأسهم - الرئيسية')
 
 @section('content')
     <!-- Warning Notice -->
@@ -141,14 +141,7 @@
                             <tr class="hover:bg-gray-50">
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center">
-                                        <div class="flex-shrink-0 h-10 w-10">
-                                            <div class="h-10 w-10 rounded-full bg-green-100 flex items-center justify-center">
-                                                <span class="text-sm font-medium text-green-600">{{ substr($stock->stock_id, 0, 2) }}</span>
-                                            </div>
-                                        </div>
-                                        <div class="mr-4">
-                                            <div class="text-sm font-medium text-gray-900">{{ $stock->stock_id }}</div>
-                                        </div>
+                                        <div class="text-sm font-medium text-gray-900">{{ $stock->stock_id }}</div>
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
