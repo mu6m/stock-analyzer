@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Stock;
+use App\Models\News;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -93,19 +94,12 @@ class StockController extends Controller
 
     public function showNews(Stock $stock, News $news)
     {
-        // Make sure this news belongs to the stock
+        // Verify that the news belongs to the stock
         if ($news->stock_id !== $stock->stock_id) {
             abort(404);
         }
         
-        // Get related news (same stock, excluding current news)
-        $relatedNews = $stock->news()
-                            ->where('id', '!=', $news->id)
-                            ->orderBy('creation_date', 'desc')
-                            ->take(5)
-                            ->get();
-        
-        return view('stocks.news-detail', compact('stock', 'news', 'relatedNews'));
+        return view('stocks.news-detail', compact('stock', 'news'));
     }
 
     public function actions(Request $request, Stock $stock)

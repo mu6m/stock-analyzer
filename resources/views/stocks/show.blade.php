@@ -25,6 +25,11 @@
         </div>
     </div>
 
+    <!-- Chart -->
+    {{-- <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
+        <h3 class="text-lg font-medium text-gray-900 mb-4">الرسم البياني</h3>
+    </div> --}}
+
     <!-- Navigation Tabs -->
     <div class="bg-white rounded-lg shadow-sm mb-8">
         <div class="border-b border-gray-200">
@@ -33,7 +38,7 @@
                     نظرة عامة
                 </a>
                 <a href="{{ route('stocks.dividends', $stock) }}" class="border-b-2 border-transparent py-4 px-1 text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300">
-                    الأرباح ({{ $stock->dividends->count() }})
+                    توزيعات الأرباح ({{ $stock->dividends->count() }})
                 </a>
                 <a href="{{ route('stocks.news', $stock) }}" class="border-b-2 border-transparent py-4 px-1 text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300">
                     الأخبار ({{ $stock->news->count() }})
@@ -56,7 +61,7 @@
         <!-- Recent Dividends -->
         <div class="bg-white rounded-lg shadow-sm">
             <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
-                <h3 class="text-lg font-medium text-gray-900">الأرباح الأخيرة</h3>
+                <h3 class="text-lg font-medium text-gray-900">توزيعات الأرباح الأخيرة</h3>
                 <a href="{{ route('stocks.dividends', $stock) }}" class="text-green-600 hover:text-green-700 text-sm font-medium">
                     عرض الكل
                 </a>
@@ -77,7 +82,7 @@
                         @endforeach
                     </div>
                 @else
-                    <p class="text-gray-500 text-center py-8">لا توجد أرباح مسجلة</p>
+                    <p class="text-gray-500 text-center py-8">لا توجد توزيعات أرباح مسجلة</p>
                 @endif
             </div>
         </div>
@@ -177,4 +182,5 @@
             </div>
         </div>
     </div>
+
 @endsection
