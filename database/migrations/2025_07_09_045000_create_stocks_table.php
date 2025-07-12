@@ -16,6 +16,12 @@ return new class extends Migration
             $table->string('company_name');
             $table->enum('market_type', ['NOMU', 'TASI']);
             $table->string('sector');
+            
+            $table->index('company_name'); // For search and ordering
+            $table->index('market_type');  // For market filter
+            $table->index('sector');       // For sector filter
+            $table->index(['market_type', 'sector']); // For combined filters
+            
         });
     }
 

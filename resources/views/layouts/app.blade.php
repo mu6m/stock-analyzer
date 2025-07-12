@@ -30,10 +30,9 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center py-4">
                 <div class="flex items-center">
-                    <h1 class="text-2xl font-bold text-green-600">الأسهم</h1>
+                    <a href="{{ route('stocks.index') }}" class="text-2xl font-bold text-green-600">الأسهم</a>
                 </div>
-                <nav class="hidden md:flex space-x-reverse space-x-8">
-                    <a href="{{ route('stocks.index') }}" class="text-gray-700 hover:text-green-600 font-medium">الرئيسية</a>
+                <nav class="hidden md:flex gap-4">
                     <a href="{{ route('stocks.index', ['market' => 'TASI']) }}" class="text-gray-700 hover:text-green-600 font-medium">تاسي</a>
                     <a href="{{ route('stocks.index', ['market' => 'NOMU']) }}" class="text-gray-700 hover:text-green-600 font-medium">نمو</a>
                 </nav>

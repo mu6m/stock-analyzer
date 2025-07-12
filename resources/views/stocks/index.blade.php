@@ -8,13 +8,13 @@
         <div class="flex items-start">
             <div class="flex-shrink-0">
                 <svg class="h-5 w-5 text-yellow-400 mt-1" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                    <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
                 </svg>
             </div>
             <div class="mr-3">
                 <h3 class="text-sm font-medium text-yellow-800">تنويه هام</h3>
                 <div class="mt-2 text-sm text-yellow-700">
-                    <p>جميع الأسهم في الموقع هي الأسهم النقية وفقا لقائمة الدراسات الشرعية للدكتور محمد بن سعود العصيمي آخر تحديث <span class="font-semibold">2024-08-11</span></p>
+                    <p>جميع الأسهم في الموقع هي الأسهم النقية وفقا لقائمة الدراسات الشرعية للدكتور محمد بن سعود العصيمي</p>
                 </div>
             </div>
         </div>
@@ -75,7 +75,7 @@
                 <div class="flex-shrink-0">
                     <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
                         <svg class="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"></path>
                         </svg>
                     </div>
                 </div>
@@ -138,25 +138,25 @@
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
                         @foreach($stocks as $stock)
-                            <tr class="hover:bg-gray-50">
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="flex items-center">
-                                        <div class="text-sm font-medium text-gray-900">{{ $stock->stock_id }}</div>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-gray-900">{{ $stock->company_name }}</div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full 
-                                        {{ $stock->market_type == 'TASI' ? 'bg-blue-100 text-blue-800' : 'bg-purple-100 text-purple-800' }}">
-                                        {{ $stock->market_type }}
-                                    </span>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    {{ $stock->sector }}
-                                </td>
-                            </tr>
+                        <tr class="hover:bg-gray-50 cursor-pointer transition-colors" onclick="window.location.href='/stock/{{ $stock->stock_id }}'">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="text-sm font-medium text-gray-900">{{ $stock->stock_id }}</div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">{{ $stock->company_name }}</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full 
+                                    {{ $stock->market_type == 'TASI' ? 'bg-blue-100 text-blue-800' : 'bg-purple-100 text-purple-800' }}">
+                                    {{ $stock->market_type }}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                {{ $stock->sector }}
+                            </td>
+                        </tr>
                         @endforeach
                     </tbody>
                 </table>
