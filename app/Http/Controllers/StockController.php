@@ -31,11 +31,17 @@ class StockController extends Controller
                       ->paginate(20);
 
         $sectors = Cache::remember('distinct_sectors', 300, function() {
-            return Stock::getDistinctSectors();
+            return Stock::whereNotNull('sector')
+                       ->distinct()
+                       ->orderBy('sector')
+                       ->pluck('sector');
         });
 
         $markets = Cache::remember('distinct_markets', 300, function() {
-            return Stock::getDistinctMarkets();
+            return Stock::whereNotNull('market_type')
+                       ->distinct()
+                       ->orderBy('market_type')
+                       ->pluck('market_type');
         });
 
         return view('stocks.index', compact('stocks', 'sectors', 'markets'));
