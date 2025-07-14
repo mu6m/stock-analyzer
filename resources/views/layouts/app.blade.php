@@ -33,6 +33,7 @@
                     <a href="{{ route('stocks.index') }}" class="text-2xl font-bold text-green-600">الأسهم</a>
                 </div>
                 <nav class="hidden md:flex gap-4">
+                    <a href="{{ route('stocks.calculator') }}" class="text-gray-700 hover:text-green-600 font-medium">حاسبة التطهير</a>
                     <a href="{{ route('stocks.index', ['market' => 'TASI']) }}" class="text-gray-700 hover:text-green-600 font-medium">تاسي</a>
                     <a href="{{ route('stocks.index', ['market' => 'NOMU']) }}" class="text-gray-700 hover:text-green-600 font-medium">نمو</a>
                 </nav>

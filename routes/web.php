@@ -4,6 +4,7 @@ use App\Http\Controllers\StockController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [StockController::class, 'index'])->name('stocks.index');
+Route::get('/calculator', [StockController::class, 'calculator'])->name('stocks.calculator');
 Route::get('/stock/{stock}', [StockController::class, 'show'])->name('stocks.show');
 Route::get('/stock/{stock}/dividends', [StockController::class, 'dividends'])->name('stocks.dividends');
 Route::get('/stock/{stock}/news', [StockController::class, 'news'])->name('stocks.news');

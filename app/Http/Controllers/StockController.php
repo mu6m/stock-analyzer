@@ -10,6 +10,12 @@ use Illuminate\Support\Facades\DB;
 
 class StockController extends Controller
 {
+
+    public function calculator()
+    {
+        return view('stocks.calculator');
+    }
+    
     public function index(Request $request)
     {
         $query = Stock::query();
