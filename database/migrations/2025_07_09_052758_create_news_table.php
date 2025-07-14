@@ -9,10 +9,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('news', function (Blueprint $table) {
-            $table->uuid('id')->primary();
+            $table->uuid('id')->primary()->default(DB::raw('(UUID())'));
             $table->text('title');
-            $table->text('description');
-            $table->timestamp('creation_date');
+            $table->text('description')->nullable();
+            $table->timestamp('creation_date')->nullable();
             $table->string('stock_id')->nullable();
 
             

@@ -6,9 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('stocks', function (Blueprint $table) {
@@ -17,17 +14,10 @@ return new class extends Migration
             $table->enum('market_type', ['NOMU', 'TASI']);
             $table->string('sector');
             
-            $table->index('company_name'); // For search and ordering
-            $table->index('market_type');  // For market filter
-            $table->index('sector');       // For sector filter
-            $table->index(['market_type', 'sector']); // For combined filters
-            
+            $table->index(['market_type', 'sector', 'company_name']);
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('stocks');

@@ -236,4 +236,3 @@ class Session extends Model
         return $this->belongsTo(Stock::class, 'stock_id');
     }
 }
-

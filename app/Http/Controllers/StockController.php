@@ -14,37 +14,28 @@ class StockController extends Controller
     {
         $query = Stock::query();
 
-        // Filter by market type
+        if ($request->filled('search')) {
+            $query->search($request->search);
+        }
+
         if ($request->filled('market')) {
             $query->byMarket($request->market);
         }
 
-        // Filter by sector
         if ($request->filled('sector')) {
             $query->bySector($request->sector);
         }
 
-        // Search by company name or stock ID
-        if ($request->filled('search')) {
-            $search = $request->search;
-            $query->where(function($q) use ($search) {
-                $q->where('company_name', 'like', '%' . $search . '%')
-                  ->orWhere('stock_id', 'like', '%' . $search . '%');
-            });
-        }
-
-        // Use select to only fetch needed columns if you don't need all
         $stocks = $query->select(['stock_id', 'company_name', 'market_type', 'sector'])
-                       ->orderBy('company_name')
-                       ->paginate(20);
-        
-        // Cache the filter options since they don't change frequently
-        $sectors = Cache::remember('stock_sectors', 3600, function () {
-            return Stock::distinct()->pluck('sector')->sort()->values();
+                      ->orderBy('company_name')
+                      ->paginate(20);
+
+        $sectors = Cache::remember('distinct_sectors', 300, function() {
+            return Stock::getDistinctSectors();
         });
-        
-        $markets = Cache::remember('stock_markets', 3600, function () {
-            return Stock::distinct()->pluck('market_type')->sort()->values();
+
+        $markets = Cache::remember('distinct_markets', 300, function() {
+            return Stock::getDistinctMarkets();
         });
 
         return view('stocks.index', compact('stocks', 'sectors', 'markets'));
@@ -52,11 +43,30 @@ class StockController extends Controller
 
     public function show(Stock $stock)
     {
-        $recentDividends = $stock->dividends()->orderBy('announce_date', 'desc')->take(5)->get();
-        $recentNews = $stock->news()->orderBy('creation_date', 'desc')->take(5)->get();
-        $recentActions = $stock->actions()->orderBy('announceDate', 'desc')->take(5)->get();
-        $recentMeetings = $stock->meetings()->orderBy('modifiedDt', 'desc')->take(5)->get();
-        $recentSessions = $stock->sessions()->orderBy('session_start_date', 'desc')->take(5)->get();
+        $recentDividends = $stock->dividends()
+            ->orderBy('announce_date', 'desc')
+            ->limit(5)
+            ->get();
+
+        $recentNews = $stock->news()
+            ->orderBy('creation_date', 'desc')
+            ->limit(5)
+            ->get();
+
+        $recentActions = $stock->actions()
+            ->orderBy('announceDate', 'desc')
+            ->limit(5)
+            ->get();
+
+        $recentMeetings = $stock->meetings()
+            ->orderBy('modifiedDt', 'desc')
+            ->limit(5)
+            ->get();
+
+        $recentSessions = $stock->sessions()
+            ->orderBy('session_start_date', 'desc')
+            ->limit(5)
+            ->get();
 
         return view('stocks.show', compact('stock', 'recentDividends', 'recentNews', 'recentActions', 'recentMeetings', 'recentSessions'));
     }
@@ -94,7 +104,6 @@ class StockController extends Controller
 
     public function showNews(Stock $stock, News $news)
     {
-        // Verify that the news belongs to the stock
         if ($news->stock_id !== $stock->stock_id) {
             abort(404);
         }

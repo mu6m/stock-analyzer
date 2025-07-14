@@ -9,13 +9,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('dividends', function (Blueprint $table) {
-            $table->uuid('id')->primary()->default(DB::raw('gen_random_uuid()'));
+            $table->uuid('id')->primary()->default(DB::raw('(UUID())'));
             $table->decimal('amount', 15, 4);
             $table->string('distribution_way')->nullable();
             $table->timestamp('announce_date')->nullable();
             $table->timestamp('due_date')->nullable();
             $table->timestamp('distribution_date')->nullable();
             $table->string('stock_id');
+            $table->index('stock_id');
+            $table->index('announce_date');
+            $table->index('distribution_date');
             
             $table->foreign('stock_id')->references('stock_id')->on('stocks')->onDelete('cascade');
         });

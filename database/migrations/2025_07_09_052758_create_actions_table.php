@@ -9,7 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('actions', function (Blueprint $table) {
-            $table->uuid('id')->primary();
+            $table->uuid('id')->primary()->default(DB::raw('(UUID())'));
             $table->string('issueTypeDesc');
             $table->decimal('newCApital', 15, 4);
             $table->decimal('prevCApital', 15, 4);

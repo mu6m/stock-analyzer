@@ -9,7 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('meetings', function (Blueprint $table) {
-            $table->uuid('id')->primary();
+            $table->uuid('id')->primary()->default(DB::raw('(UUID())'));
             $table->string('compSymbolCode');
             $table->text('holdingSite')->nullable();
             $table->timestamp('modifiedDt')->nullable();
