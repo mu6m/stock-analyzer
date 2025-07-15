@@ -34,21 +34,21 @@ class StockController extends Controller
 
         // Updated to include price fields
         $stocks = $query->select(['stock_id', 'company_name', 'market_type', 'sector', 'current_price', 'previous_price'])
-                      ->orderBy('company_name')
-                      ->paginate(20);
+                        ->orderBy('company_name')
+                        ->paginate(20);
 
         $sectors = Cache::remember('distinct_sectors', 300, function() {
             return Stock::whereNotNull('sector')
-                       ->distinct()
-                       ->orderBy('sector')
-                       ->pluck('sector');
+                        ->distinct()
+                        ->orderBy('sector')
+                        ->pluck('sector');
         });
 
         $markets = Cache::remember('distinct_markets', 300, function() {
             return Stock::whereNotNull('market_type')
-                       ->distinct()
-                       ->orderBy('market_type')
-                       ->pluck('market_type');
+                        ->distinct()
+                        ->orderBy('market_type')
+                        ->pluck('market_type');
         });
 
         return view('stocks.index', compact('stocks', 'sectors', 'markets'));

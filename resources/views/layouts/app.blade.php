@@ -81,5 +81,6 @@
             mobileMenu.classList.toggle('hidden');
         });
     </script>
+    @stack('scripts')
 </body>
 </html>

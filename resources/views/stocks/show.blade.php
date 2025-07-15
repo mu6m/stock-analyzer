@@ -26,9 +26,10 @@
     </div>
 
     <!-- Chart -->
-    {{-- <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
-        <h3 class="text-lg font-medium text-gray-900 mb-4">الرسم البياني</h3>
-    </div> --}}
+    <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
+        <h3 class="text-lg font-medium text-gray-900 mb-4">الرسم البياني للسعر</h3>
+        <div id="stock-chart-container" style="height: 400px; min-width: 310px"></div>
+    </div>
 
     <!-- Navigation Tabs -->
     <div class="bg-white rounded-lg shadow-sm mb-8">
@@ -208,7 +209,7 @@
         </div>
 
         <!-- Recent Sessions -->
-              <div class="bg-white rounded-lg shadow-sm">
+                <div class="bg-white rounded-lg shadow-sm">
             <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
                 <h3 class="text-lg font-medium text-gray-900">الجلسات الأخيرة</h3>
                 <a href="{{ route('stocks.sessions', $stock) }}" class="text-green-600 hover:text-green-700 text-sm font-medium">
@@ -254,5 +255,119 @@
             display: none;
         }
     </style>
-
 @endsection
+
+@push('scripts')
+{{-- Make sure you have @stack('scripts') in your main app.blade.php layout file before the closing </body> tag --}}
+<script src="https://code.highcharts.com/stock/highstock.js"></script>
+<script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/stock/modules/export-data.js"></script>
+<script src="https://code.highcharts.com/stock/modules/accessibility.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Get the price history from the Blade template
+        const priceHistory = @json($stock->price_history ?? []);
+        // Check if there is data to display
+        if (priceHistory && priceHistory.length > 0) {
+            // Format the data for Highcharts: array of [timestamp, price]
+            // The data must be sorted by date in ascending order for Highstock
+            const chartData = priceHistory
+                .map(item => [new Date(item.dateTime).getTime(), item.indexPrice])
+                .sort((a, b) => a[0] - b[0]); // Sort by timestamp
+
+            // Create the stock chart
+            Highcharts.stockChart('stock-chart-container', {
+                
+                chart: {
+                    style: {
+                        fontFamily: 'inherit' // Use the same font as the page for consistency
+                    },
+                    alignTicks: false
+                },
+
+                // Disable credits
+                credits: {
+                    enabled: false
+                },
+
+                // Configure the range selector with Arabic labels
+                rangeSelector: {
+                    inputEnabled: false, // Disable date input boxes for a cleaner look
+                    buttons: [{
+                        type: 'day',
+                        count: 5,
+                        text: '5 أيام'
+                    }, {
+                        type: 'week',
+                        count: 1,
+                        text: 'أسبوع'
+                    }, {
+                        type: 'month',
+                        count: 1,
+                        text: 'شهر'
+                    }, {
+                        type: 'month',
+                        count: 3,
+                        text: '3 أشهر'
+                    }, {
+                        type: 'all',
+                        text: 'الكل'
+                    }],
+                    selected: 4, // Set 'All' as the default selected range
+                    buttonTheme: {
+                        width: 50
+                    },
+                },
+
+                // Set the chart title
+                title: {
+                    text: `تاريخ سعر سهم {{ $stock->company_name }}`
+                },
+
+                // Configure the Y-axis (price)
+                yAxis: {
+                    title: {
+                        text: 'السعر (ريال)'
+                    },
+                    opposite: true, // Move Y-axis to the right for RTL layout
+                },
+
+                // Configure the X-axis (date)
+                xAxis: {
+                    reversed: false // Time should always flow left-to-right
+                },
+
+                // Configure the tooltip
+                tooltip: {
+                    valueDecimals: 2,
+                    valueSuffix: ' ريال'
+                },
+
+                // Define the data series
+                series: [{
+                    name: 'سعر الإغلاق',
+                    data: chartData,
+                    type: 'area', // Use an area chart for better visualization
+                    threshold: null,
+                    fillColor: {
+                        linearGradient: {
+                            x1: 0,
+                            y1: 0,
+                            x2: 0,
+                            y2: 1
+                        },
+                        stops: [
+                            [0, Highcharts.getOptions().colors[0]],
+                            [1, Highcharts.color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                        ]
+                    }
+                }]
+            });
+        } else {
+            // Display a message if no historical data is available
+            document.getElementById('stock-chart-container').innerHTML = '<p class="text-gray-500 text-center py-8">لا توجد بيانات تاريخية للأسعار لعرض الرسم البياني.</p>';
+        }
+    });
+</script>
+@endpush
