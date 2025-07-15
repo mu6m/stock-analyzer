@@ -67,8 +67,9 @@
     <footer class="bg-white border-t mt-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <div class="text-center text-gray-600">
-                <p>&copy; {{ date('Y') }} الأسهم النقية. جميع الحقوق محفوظة.</p>
+                <p>&copy; {{ date('Y') }} الأسهم جميع الحقوق محفوظة.</p>
                 <p class="mt-2 text-sm">البيانات لأغراض تعليمية فقط وليست نصائح استثمارية</p>
+                <p class="mt-2 text-sm">للتواصل me@ledraa.com</p>
             </div>
         </div>
     </footer>

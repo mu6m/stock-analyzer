@@ -190,7 +190,7 @@
                         @foreach($recentMeetings as $meeting)
                             <div class="p-4 bg-gray-50 rounded-lg">
                                 <h4 class="font-medium text-gray-900 mb-2">{{ $meeting->meetingReason ?? 'اجتماع' }}</h4>
-                                <p class="text-sm text-gray-600 mb-2">{{ $meeting->natureOfGenMetng ?? 'غير محدد' }}</p>
+                                <p class="text-sm text-gray-600 mb-2">{{ $meeting->holdingSite ?? 'غير محدد' }}</p>
                                 <div class="flex items-center justify-between">
                                     <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full 
                                         {{ $meeting->status == 'active' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800' }}">
@@ -208,7 +208,7 @@
         </div>
 
         <!-- Recent Sessions -->
-        <div class="bg-white rounded-lg shadow-sm">
+              <div class="bg-white rounded-lg shadow-sm">
             <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
                 <h3 class="text-lg font-medium text-gray-900">الجلسات الأخيرة</h3>
                 <a href="{{ route('stocks.sessions', $stock) }}" class="text-green-600 hover:text-green-700 text-sm font-medium">
@@ -221,27 +221,19 @@
                         @foreach($recentSessions as $session)
                             <div class="p-4 bg-gray-50 rounded-lg">
                                 <div class="flex items-center justify-between mb-2">
-                                    <h4 class="font-medium text-gray-900">جلسة تداول</h4>
+                                    <h4 class="font-medium text-gray-900">{{ $session->session_type }}</h4>
                                     <span class="text-xs text-gray-500">{{ $session->session_start_date?->format('Y-m-d') }}</span>
                                 </div>
                                 <div class="grid grid-cols-2 gap-4 text-sm">
                                     <div>
-                                        <span class="text-gray-500">سعر الإغلاق:</span>
-                                        <span class="font-medium">{{ number_format($session->closing_price ?? 0, 2) }}</span>
+                                        <span class="text-gray-500">تاريخ نهاية الجلسة</span>
+                                        <span class="font-medium">{{ $session->session_end_date?->format('Y-m-d') }}</span>
                                     </div>
                                     <div>
                                         <span class="text-gray-500">الحجم:</span>
-                                        <span class="font-medium">{{ number_format($session->volume ?? 0) }}</span>
+                                        <span class="font-medium">{{ number_format($session->no_of_bod ?? 0) }}</span>
                                     </div>
                                 </div>
-                                @if(isset($session->price_change))
-                                    <div class="mt-2">
-                                        <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full 
-                                            {{ $session->price_change >= 0 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
-                                            {{ $session->price_change >= 0 ? '+' : '' }}{{ number_format($session->price_change, 2) }}
-                                        </span>
-                                    </div>
-                                @endif
                             </div>
                         @endforeach
                     </div>
