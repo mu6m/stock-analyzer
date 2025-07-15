@@ -33,7 +33,8 @@
     <!-- Navigation Tabs -->
     <div class="bg-white rounded-lg shadow-sm mb-8">
         <div class="border-b border-gray-200">
-            <nav class="flex space-x-8 px-6" aria-label="Tabs">
+            <!-- Desktop Navigation -->
+            <nav class="hidden md:flex space-x-8 px-6" aria-label="Tabs">
                 <a href="#overview" class="border-b-2 border-green-500 py-4 px-1 text-sm font-medium text-green-600" aria-current="page">
                     نظرة عامة
                 </a>
@@ -52,6 +53,30 @@
                 <a href="{{ route('stocks.sessions', $stock) }}" class="border-b-2 border-transparent py-4 px-1 text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300">
                     الجلسات ({{ $stock->sessions->count() }})
                 </a>
+            </nav>
+            
+            <!-- Mobile Navigation -->
+            <nav class="md:hidden px-4 py-2" aria-label="Tabs">
+                <div class="flex overflow-x-auto space-x-4 scrollbar-hide">
+                    <a href="#overview" class="border-b-2 border-green-500 py-2 px-3 text-sm font-medium text-green-600 whitespace-nowrap flex-shrink-0" aria-current="page">
+                        نظرة عامة
+                    </a>
+                    <a href="{{ route('stocks.dividends', $stock) }}" class="border-b-2 border-transparent py-2 px-3 text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap flex-shrink-0">
+                        توزيعات الأرباح ({{ $stock->dividends->count() }})
+                    </a>
+                    <a href="{{ route('stocks.news', $stock) }}" class="border-b-2 border-transparent py-2 px-3 text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap flex-shrink-0">
+                        الأخبار ({{ $stock->news->count() }})
+                    </a>
+                    <a href="{{ route('stocks.actions', $stock) }}" class="border-b-2 border-transparent py-2 px-3 text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap flex-shrink-0">
+                        الإجراءات ({{ $stock->actions->count() }})
+                    </a>
+                    <a href="{{ route('stocks.meetings', $stock) }}" class="border-b-2 border-transparent py-2 px-3 text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap flex-shrink-0">
+                        الاجتماعات ({{ $stock->meetings->count() }})
+                    </a>
+                    <a href="{{ route('stocks.sessions', $stock) }}" class="border-b-2 border-transparent py-2 px-3 text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap flex-shrink-0">
+                        الجلسات ({{ $stock->sessions->count() }})
+                    </a>
+                </div>
             </nav>
         </div>
     </div>
@@ -181,6 +206,61 @@
                 @endif
             </div>
         </div>
+
+        <!-- Recent Sessions -->
+        <div class="bg-white rounded-lg shadow-sm">
+            <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+                <h3 class="text-lg font-medium text-gray-900">الجلسات الأخيرة</h3>
+                <a href="{{ route('stocks.sessions', $stock) }}" class="text-green-600 hover:text-green-700 text-sm font-medium">
+                    عرض الكل
+                </a>
+            </div>
+            <div class="p-6">
+                @if($recentSessions->count() > 0)
+                    <div class="space-y-4">
+                        @foreach($recentSessions as $session)
+                            <div class="p-4 bg-gray-50 rounded-lg">
+                                <div class="flex items-center justify-between mb-2">
+                                    <h4 class="font-medium text-gray-900">جلسة تداول</h4>
+                                    <span class="text-xs text-gray-500">{{ $session->session_start_date?->format('Y-m-d') }}</span>
+                                </div>
+                                <div class="grid grid-cols-2 gap-4 text-sm">
+                                    <div>
+                                        <span class="text-gray-500">سعر الإغلاق:</span>
+                                        <span class="font-medium">{{ number_format($session->closing_price ?? 0, 2) }}</span>
+                                    </div>
+                                    <div>
+                                        <span class="text-gray-500">الحجم:</span>
+                                        <span class="font-medium">{{ number_format($session->volume ?? 0) }}</span>
+                                    </div>
+                                </div>
+                                @if(isset($session->price_change))
+                                    <div class="mt-2">
+                                        <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full 
+                                            {{ $session->price_change >= 0 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+                                            {{ $session->price_change >= 0 ? '+' : '' }}{{ number_format($session->price_change, 2) }}
+                                        </span>
+                                    </div>
+                                @endif
+                            </div>
+                        @endforeach
+                    </div>
+                @else
+                    <p class="text-gray-500 text-center py-8">لا توجد جلسات</p>
+                @endif
+            </div>
+        </div>
     </div>
+
+    <!-- Custom CSS for mobile scrolling -->
+    <style>
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
 
 @endsection
