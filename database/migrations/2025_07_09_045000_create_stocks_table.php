@@ -13,6 +13,8 @@ return new class extends Migration
             $table->string('company_name');
             $table->enum('market_type', ['NOMU', 'TASI']);
             $table->string('sector');
+            $table->decimal('current_price', 10, 2)->nullable();
+            $table->decimal('previous_price', 10, 2)->nullable();
             $table->json('price_history')->nullable();
             
             $table->index(['market_type', 'sector', 'company_name']);

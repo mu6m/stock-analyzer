@@ -18,8 +18,45 @@ class Stock extends Model
         'stock_id',
         'company_name',
         'market_type',
-        'sector'
+        'sector',
+        'current_price',
+        'previous_price',
+        'price_history'
     ];
+
+    protected $casts = [
+        'current_price' => 'decimal:2',
+        'previous_price' => 'decimal:2',
+        'price_history' => 'array'
+    ];
+
+    // Calculate percentage change
+    public function getPriceChangePercentageAttribute()
+    {
+        if (!$this->current_price || !$this->previous_price || $this->previous_price == 0) {
+            return null;
+        }
+        
+        $change = $this->current_price - $this->previous_price;
+        return round(($change / $this->previous_price) * 100, 2);
+    }
+
+    // Get price change amount
+    public function getPriceChangeAttribute()
+    {
+        if (!$this->current_price || !$this->previous_price) {
+            return null;
+        }
+        
+        return $this->current_price - $this->previous_price;
+    }
+
+    // Check if price went up
+    public function getIsPriceUpAttribute()
+    {
+        $change = $this->price_change;
+        return $change ? $change > 0 : null;
+    }
 
     // Scope for market filtering
     public function scopeByMarket(Builder $query, string $market): Builder
@@ -61,7 +98,7 @@ class Stock extends Model
         });
     }
 
-        public function dividends()
+    public function dividends()
     {
         return $this->hasMany(Dividend::class, 'stock_id');
     }

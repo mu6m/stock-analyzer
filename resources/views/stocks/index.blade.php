@@ -1,4 +1,3 @@
-
 @extends('layouts.app')
 
 @section('title', 'الأسهم - الرئيسية')
@@ -135,6 +134,8 @@
                             <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">اسم الشركة</th>
                             <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">السوق</th>
                             <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">القطاع</th>
+                            <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">السعر الحالي</th>
+                            <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">التغيير %</th>
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
@@ -156,6 +157,41 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                 {{ $stock->sector }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                @if($stock->current_price)
+                                    {{ number_format($stock->current_price, 2) }} ر.س
+                                @else
+                                    N/A
+                                @endif
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                @if($stock->price_change_percentage !== null)
+                                    @php
+                                        $change = $stock->price_change_percentage;
+                                        $formatted = number_format($change, 2) . '%';
+                                        $class = $change > 0 ? 'text-green-600' : ($change < 0 ? 'text-red-600' : 'text-gray-500');
+                                        $prefix = $change > 0 ? '+' : '';
+                                    @endphp
+                                    <span class="{{ $class }} flex items-center">
+                                        @if($change > 0)
+                                            <svg class="w-4 h-4 ml-1" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 7.414V15a1 1 0 11-2 0V7.414L6.707 9.707a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                                            </svg>
+                                        @elseif($change < 0)
+                                            <svg class="w-4 h-4 ml-1" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M14.707 10.293a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L9 12.586V5a1 1 0 012 0v7.586l2.293-2.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                            </svg>
+                                        @else
+                                            <svg class="w-4 h-4 ml-1" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path>
+                                            </svg>
+                                        @endif
+                                        {{ $prefix }}{{ $formatted }}
+                                    </span>
+                                @else
+                                    <span class="text-gray-500">N/A</span>
+                                @endif
                             </td>
                         </tr>
                         @endforeach

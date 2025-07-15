@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 class StockController extends Controller
 {
 
-    public function calculator()
+   public function calculator()
     {
         return view('stocks.calculator');
     }
@@ -32,7 +32,8 @@ class StockController extends Controller
             $query->bySector($request->sector);
         }
 
-        $stocks = $query->select(['stock_id', 'company_name', 'market_type', 'sector'])
+        // Updated to include price fields
+        $stocks = $query->select(['stock_id', 'company_name', 'market_type', 'sector', 'current_price', 'previous_price'])
                       ->orderBy('company_name')
                       ->paginate(20);
 
